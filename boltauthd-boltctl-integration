@@ -1,0 +1,21 @@
+#!/bin/bash
+case "$1" in
+	authorize)
+		echo "$2" > /tmp/lspci_cache/newauth.tmp
+		;;
+	info)
+		if [ ! "$2" ]; then 
+			/usr/bin/boltctl info
+			exit 1
+		fi
+		echo -e "$(/usr/bin/boltctl info "$2" | sed -e $"s/$2/$2\n   |- pci name:      $(grep "$(grep "$2" /tmp/lspci_cache/lspci_bolt.tmp | grep -o "[0-9][0-9]:[0-9][0-9]\.[0-9]")" /tmp/lspci_cache/lspci_bolt.tmp | head -1 | cut -d' ' -f 5-)\n   |- pci id:        $(grep "$2" /tmp/lspci_cache/lspci_bolt.tmp | grep -o "[0-9][0-9]:[0-9][0-9]\.[0-9]")/g")"
+		;;
+	list|"")
+		while read -r line; do
+			echo -e "   $line$(if [ "$(echo "$line" | grep uuid:)" ]; then echo -e "\n   |- pci name:      $(grep "$(grep "$(echo "$line" | grep -o "........-....-....-....-............" )" /tmp/lspci_cache/lspci_bolt.tmp | grep -o "[0-9][0-9]:[0-9][0-9]\.[0-9]")" /tmp/lspci_cache/lspci_bolt.tmp | head -1 | cut -d' ' -f 5-)\n   |- pci id:        $(grep "$(echo "$line" | grep -o "........-....-....-....-............")" /tmp/lspci_cache/lspci_bolt.tmp | grep -o "[0-9][0-9]:[0-9][0-9]\.[0-9]")"; fi)"
+		done < <(/usr/bin/boltctl list)
+		;;
+	*)
+		/usr/bin/boltctl $@
+		;;
+esac

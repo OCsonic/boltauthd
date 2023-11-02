@@ -1,0 +1,25 @@
+#!/sbin/openrc-run
+# Copyright 1999-2021 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+name="Thunderbolt Automatic Authorization Daemon"
+description="Userspace daemon to automatically authorize Thunderbolt devices and track which PCI devices are connected via Thunderbolt."
+command="/usr/bin/boltauthd"
+command_background="true"
+pidfile="/var/run/boltauthd.pid"
+
+depend() {
+	before bolt display-manager
+}
+
+start() {
+	ebegin "Starting ${RC_SVCNAME}"
+	/usr/bin/boltauthd &> /dev/null &
+	eend $?
+}
+
+stop() {
+	ebegin "Stopping ${RC_SVCNAME}"
+	start-stop-daemon --stop --quiet --pidfile "${pidfile}"
+	eend $?
+}
