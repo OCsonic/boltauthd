@@ -9,3 +9,5 @@ Copy [boltauthd](./boltauthd-openrc) to /etc/init.d/boltauthd and add the servic
 ```
 sudo rc-update add boltauthd default
 ```
+
+Restart your system and alias boltctl to boltauthd-boltctl-integration to automatically list PCI IDs in the output next to each Thunderbolt device ID
