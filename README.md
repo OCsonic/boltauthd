@@ -5,7 +5,7 @@ Copy [boltauthd](./boltauthd) and [boltauthd-boltctl-integration](./boltauthd-bo
 Then start the background service
 
 ### OpenRC
-Copy [boltauthd](./boltauthd-openrc) to /etc/init.d/boltauthd and add the service to the default runlevel
+Copy [boltauthd-openrc](./boltauthd-openrc) to /etc/init.d/boltauthd and add the service to the default runlevel
 ```
 sudo rc-update add boltauthd default
 ```
